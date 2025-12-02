@@ -18,7 +18,11 @@ func ReadData() (*os.File, error) {
 	return file, nil
 }
 
-func RotateDial(current int, move string) int {
+func fullCirclesDone(value int) int {
+	return value / 100
+}
+
+func RotateDial(current int, move string, counter *int) int {
 	// Read each line of input file
 	if len(move) < 2 {
 		return current
@@ -30,8 +34,14 @@ func RotateDial(current int, move string) int {
 	}
 	switch dir {
 	case 'L':
+		if num > current {
+			*counter += fullCirclesDone(current + num)
+		}
 		return (current - num + 100) % 100
 	case 'R':
+		if (num + current) >= 100 {
+			*counter += fullCirclesDone(num + current)
+		}
 		return (current + num) % 100
 	}
 	return current
@@ -42,10 +52,7 @@ func DecryptPassword(file *os.File) int {
 	currentValue := StartingPoint
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		currentValue = RotateDial(currentValue, scanner.Text())
-		if currentValue == 0 {
-			counter++
-		}
+		currentValue = RotateDial(currentValue, scanner.Text(), &counter)
 	}
 	return counter
 }
