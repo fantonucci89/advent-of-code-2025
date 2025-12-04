@@ -8,32 +8,27 @@ import (
 	"github.com/fantonucci89/advent_of_code_2025/internal/utils"
 )
 
-func findHigherNumber(line string) (int, error) {
-	tens, _ := strconv.Atoi(line[0:1])
-	unit, _ := strconv.Atoi(line[1:2])
+func findHigherNumber(bank string) (int, error) {
+	maxJoltage := 0
 
-	for i := 2; i < len(line)-1; i++ {
-		charInt, _ := strconv.Atoi(string(line[i]))
-		if charInt > tens {
-			tens = charInt
-			nextCharInt, _ := strconv.Atoi(string(line[i+1]))
-			unit = nextCharInt
-			fmt.Println(tens, unit)
-			continue
-		}
-		if charInt > unit {
-			unit = charInt
-			fmt.Println(tens, unit)
-			continue
+	// Try all possible combinations of two digits
+	for i := 0; i < len(bank); i++ {
+		for j := i + 1; j < len(bank); j++ {
+			// Form a 2-digit number using digits at positions i and j
+			twoDigitStr := string(bank[i]) + string(bank[j])
+			twoDigitNum, err := strconv.Atoi(twoDigitStr)
+			if err != nil {
+				return 0, err
+			}
+
+			// Keep track of the maximum
+			if twoDigitNum > maxJoltage {
+				maxJoltage = twoDigitNum
+			}
 		}
 	}
 
-	result, err := fmt.Printf("%d%d", tens, unit)
-	if err != nil {
-		return 0, err
-	}
-	fmt.Println("End iteration")
-	return result, nil
+	return maxJoltage, nil
 }
 
 func main() {
