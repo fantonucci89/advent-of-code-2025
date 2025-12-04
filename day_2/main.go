@@ -2,11 +2,14 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"os"
 	"strconv"
 	"strings"
 )
+
+var task int = 1
 
 func ReadData() (*os.File, error) {
 	file, err := os.Open("data.txt")
@@ -54,7 +57,10 @@ func CalculateInvalidIdInRange(r *int, idRange string) {
 
 	// Check for invalid IDs in the range
 	for id := start; id <= end; id++ {
-		if hasRepeatedDigitsImproved(id) {
+		if task == 1 && hasRepeatedDigits(id) {
+			*r += id
+		}
+		if task == 2 && hasRepeatedDigitsImproved(id) {
 			*r += id
 		}
 	}
@@ -100,6 +106,10 @@ func hasRepeatedDigitsImproved(id int) bool {
 }
 
 func main() {
+	useTask := flag.Int("task", 1, "Task number (1 or 2)")
+	flag.Parse()
+
+	task = *useTask
 	var listOfRanges []string
 
 	ListRanges(&listOfRanges)
