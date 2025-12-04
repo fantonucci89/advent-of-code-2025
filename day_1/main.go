@@ -5,18 +5,11 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+
+	"github.com/fantonucci89/advent_of_code_2025/internal/utils"
 )
 
 const StartingPoint int = 50
-
-func ReadData() (*os.File, error) {
-	file, err := os.Open("data.txt")
-	if err != nil {
-		return nil, err
-	}
-
-	return file, nil
-}
 
 func RotateDial(current int, move string, counter *int) int {
 	// Read each line of input file
@@ -45,7 +38,7 @@ func RotateDial(current int, move string, counter *int) int {
 }
 
 func DecryptPassword(file *os.File) int {
-	var counter int = 0
+	counter := 0
 	currentValue := StartingPoint
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
@@ -55,7 +48,7 @@ func DecryptPassword(file *os.File) int {
 }
 
 func main() {
-	file, err := ReadData()
+	file, err := utils.ReadData("data.txt")
 	if err != nil {
 		panic(err)
 	}

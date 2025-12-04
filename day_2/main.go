@@ -3,9 +3,10 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
+
+	"github.com/fantonucci89/advent_of_code_2025/internal/utils"
 )
 
 var (
@@ -13,17 +14,8 @@ var (
 	Task    int = 1
 )
 
-func ReadData() (*os.File, error) {
-	file, err := os.Open("data.txt")
-	if err != nil {
-		return nil, err
-	}
-
-	return file, nil
-}
-
 func ListRanges(listOfRanges *[]string) {
-	file, err := ReadData()
+	file, err := utils.ReadData("data.txt")
 	if err != nil {
 		fmt.Println("Error reading data:", err)
 		return
