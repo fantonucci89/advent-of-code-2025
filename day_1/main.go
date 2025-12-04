@@ -18,10 +18,6 @@ func ReadData() (*os.File, error) {
 	return file, nil
 }
 
-func fullCirclesDone(value int) int {
-	return value / 100
-}
-
 func RotateDial(current int, move string, counter *int) int {
 	// Read each line of input file
 	if len(move) < 2 {
@@ -34,17 +30,18 @@ func RotateDial(current int, move string, counter *int) int {
 	}
 	switch dir {
 	case 'L':
-		if num > current {
-			*counter += fullCirclesDone(current + num)
+		if current == 0 {
+			*counter -= 1
 		}
-		return (current - num + 100) % 100
+		current = current - num
+		if current <= 0 {
+			*counter += ((-current) / 100) + 1
+		}
 	case 'R':
-		if (num + current) >= 100 {
-			*counter += fullCirclesDone(num + current)
-		}
-		return (current + num) % 100
+		current = current + num
+		*counter += current / 100
 	}
-	return current
+	return current % 100
 }
 
 func DecryptPassword(file *os.File) int {

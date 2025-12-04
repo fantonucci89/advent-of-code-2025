@@ -71,28 +71,27 @@ func hasRepeatedDigits(id int) bool {
 
 func hasRepeatedDigitsImproved(id int) bool {
 	strId := strconv.Itoa(id)
-	var listDividers []int
-	// Find minimum common multiple
-	for i := 2; i <= (len(strId) / 2); i++ {
-		if len(strId)%i == 0 {
-			listDividers = append(listDividers, i)
+
+	// Try all possible pattern lengths from 1 to half the string length
+	for patternLen := 1; patternLen <= len(strId)/2; patternLen++ {
+		// Check if the string length is divisible by the pattern length
+		if len(strId)%patternLen != 0 {
+			continue
 		}
-	}
 
-	if len(listDividers) == 0 {
-		listDividers = append(listDividers, 1)
-	}
+		// Extract the pattern
+		pattern := strId[:patternLen]
 
-	for _, divider := range listDividers {
-		// Split the string into parts of length divider
-		substr := strId[:divider]
+		// Check if the entire string is made up of this pattern repeated
 		matched := true
-		for j := divider; j < len(strId); j += divider {
-			if strId[j:j+divider] != substr {
+		for i := patternLen; i < len(strId); i += patternLen {
+			if strId[i:i+patternLen] != pattern {
 				matched = false
 				break
 			}
 		}
+
+		// If we found a repeating pattern, this ID is invalid
 		if matched {
 			return true
 		}
